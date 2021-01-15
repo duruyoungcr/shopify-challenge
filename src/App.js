@@ -14,7 +14,7 @@ function App() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   // const [nominations, setNominations] = useState([]);
-  // const [movie, setMovie] = useState({});
+  const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     FetchMovies()
@@ -25,6 +25,9 @@ function App() {
       const response = await axios.get(baseURL + searchTerm)
       setResults(response.data);
       setLoading(false);
+      if (response.data.Response === "True") {
+        setMovies(response.data.Search)
+      }
     } catch (error) {
       console.log(error);
     }
@@ -34,7 +37,7 @@ function App() {
   return (
     <div className="App">
       <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} setLoading={setLoading}/>
-      <SearchResults results={results} loading={loading} searchTerm={searchTerm}/>
+      <SearchResults results={results} loading={loading} searchTerm={searchTerm} movies={movies}/>
       <Nominations/>
     </div>
   );

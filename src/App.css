@@ -5,17 +5,15 @@
 }
 
 .App {
-  background-color: #faedee;
-  padding: 4rem 4rem;
+  background-color: teal;
+  padding: 4rem 2rem;
   min-height: 100vh;
 }
 .italic {
   font-style: italic;
 }
 
-.loader {
-  position: fixed;
-  top: 50%;
-  right: 50%;
-  /* transform: translate(50%,50%); */
-}
+/* .loader {
+  color: teal;
+} */
+

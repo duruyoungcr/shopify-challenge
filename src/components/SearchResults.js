@@ -3,12 +3,11 @@ import Loader from "./Loader"
 import DisplayMovies from './DisplayMovies'
 import { useToast } from "@chakra-ui/react"
 
-const SearchResults = ({results, loading, searchTerm}) => {
+const SearchResults = ({results, loading, searchTerm, movies}) => {
     const toast = useToast();
-    console.log(results);
-    
+      
     useEffect(() => {
-        if (searchTerm !== "" && loading === false && results.Error === "Too many results.") {
+        if (searchTerm !== "" && loading === false && results.Error !== "Incorrect IMDb ID.") {
             toast(
             {
                 title: "An error occurred.",
@@ -25,14 +24,8 @@ const SearchResults = ({results, loading, searchTerm}) => {
         <div className="results-container">
             <h3>Search Results</h3>
             {results.Response === "True" && <p>We found {results.totalResults} matches for your search</p>}
-            <div>
-            {loading && <Loader/> }
-            { !loading && results.Response === "True" && 
-                results.Search.map((movie) => {
-                    <DisplayMovies movie={movie}/>
-                })
-            }
-            </div>
+            {loading && <Loader/>}
+            <DisplayMovies movies={movies}/>
         </div>
     )
 }
