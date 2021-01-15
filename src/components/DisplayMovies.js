@@ -1,32 +1,80 @@
 import React from 'react'
+//chakra UI
 import { Box, Image, Badge } from "@chakra-ui/react"
+import { Button } from "@chakra-ui/react"
+import { useToast } from "@chakra-ui/react"
+// sweetalert
+import swal from 'sweetalert';
 
-const DisplayMovies = ({movies}) => {
+const DisplayMovies = ({movies, setNomMovie}) => {
+
+    const toast = useToast();
+    const placeholderImage = "https://via.placeholder.com/150?text=N/A"
+    const nominationList = JSON.parse(localStorage.getItem("nominations")) || [];
+
+    const handleClick = (e, movie) => {
+        let foundMatch = false;
+        console.log(nominationList.length);
+        if (nominationList.length < 5) {
+            for (let i = 0; i < nominationList.length; i++) {
+                if (nominationList[i].imdbID === movie.imdbID) {
+                    toast(
+                        {
+                            title: "An error occurred.",
+                            description: "you already nominated this movie",
+                            status: "error",
+                            duration: 3000,
+                            isClosable: true,
+                        }
+                    )
+                    foundMatch = true;
+                } 
+            }
+            if (!foundMatch) {
+                nominationList.push(movie)
+                localStorage.setItem("nominations", JSON.stringify(nominationList))
+                setNomMovie(movie);
+                swal("Success !", "Movie nominated successfully", "success");
+            }
+        } else {
+            toast(
+                {
+                    title: "An error occurred.",
+                    description: "maximum number of nominations reached",
+                    status: "error",
+                    duration: 3000,
+                    isClosable: true,
+                }
+            )
+        }
+        
+    }
+
     return (
         <div className="movie-list">
-            {movies.map((movie) => {
+            {movies.map((movie,index) => {
                 return (
-                    <Box maxW="300px" borderWidth="1px" borderRadius="lg" overflow="hidden" key={movie.imdbID} m="2" d="flex">
-                        <Image src={movie.Poster} alt={movie.Title} height="200px" maxW="150px"/>
-                        <Box p="2" maxW="100%">
+                    <Box maxW="300px" borderWidth="1px" borderRadius="lg" overflow="hidden" key={index} m="2" d="flex" bg="teal.400" mx="auto">
+                        <Image src={movie.Poster !== "N/A" ? movie.Poster : placeholderImage} alt={movie.Title} height="200px" width="150px"/>
+                        <Box p="2" width="100%" d="flex" flexDirection="column" justifyContent="space-around">
                             <Box d="flex" alignItems="baseline" mt="2">
-                                <Badge borderRadius="full" px="2" colorScheme="teal">
+                                <Badge borderRadius="full" px="2" colorScheme="teal" >
                                 {movie.Type}
                                 </Badge>
                             </Box>
                         <Box
-                            mt="1"
+                            my="1"
                             fontWeight="semibold"
-                            as="h6"
                             lineHeight="tight"
-                            isTruncated
-                            
                         >
                             {movie.Title}
                         </Box>
-                        <Box fontWeight="semibold">
+                        <Box fontSize="12px" className="italic">
                            Released: {movie.Year}
                         </Box>
+                        <Button size="sm" colorScheme="white" variant="outline" onClick={(e) => handleClick(e, movie)}>
+                            Nominate
+                        </Button>
                     </Box>
                 </Box>
                 )   

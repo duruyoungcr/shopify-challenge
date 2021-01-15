@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  color: white;
 }
 
 .App {
@@ -11,9 +12,10 @@
 }
 .italic {
   font-style: italic;
+  color: white;
 }
 
-/* .loader {
-  color: teal;
-} */
+.loader {
+  color: white;
+}
 

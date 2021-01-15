@@ -6,18 +6,19 @@ import Nominations from './components/Nominations'
 import axios from 'axios'
 import baseURL from "./request"
 
-
-
-
 function App() {
   const [searchTerm , setSearchTerm] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  // const [nominations, setNominations] = useState([]);
   const [movies, setMovies] = useState([]);
+  const [nomMovie, setNomMovie] = useState({});
 
   useEffect(() => {
     FetchMovies()
+    if (searchTerm === '' || loading) {
+      setResults([]) ;
+      setMovies([]);
+    }
   }, [searchTerm])
 
   const FetchMovies = async () => {
@@ -33,12 +34,11 @@ function App() {
     }
   }
 
-
   return (
     <div className="App">
       <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} setLoading={setLoading}/>
-      <SearchResults results={results} loading={loading} searchTerm={searchTerm} movies={movies}/>
-      <Nominations/>
+      <SearchResults results={results} loading={loading} searchTerm={searchTerm} movies={movies} setNomMovie={setNomMovie}/>
+      <Nominations  nomMovie={nomMovie}/>
     </div>
   );
 }
