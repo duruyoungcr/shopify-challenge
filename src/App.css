@@ -1,8 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Raleway:wght@200&display=swap');
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   color: white;
+  font-family: 'Lato', sans-serif;
 }
 
 .App {
@@ -18,7 +21,9 @@
 .loader {
   color: white;
 }
-
+.sub-title {
+  margin: 0.5rem 0;
+}
 /* sweetalert */
 .swal-footer {
   border-top: 1px solid teal;
@@ -36,6 +41,7 @@
 
 .swal-title {
   padding: 0 !important;
+
 }
 
 .swal-overlay {
@@ -51,6 +57,7 @@
   border-bottom: 1px solid white;
   font-weight: 500;
   font-size: 2rem;
+  font-family: 'Raleway', sans-serif;
 
 }
 .search-box {
@@ -68,6 +75,11 @@
 }
 .results-container {
   flex: 1;
+  position: relative;
+}
+.loader {
+  text-align: center;
+  margin: 6rem 0;
 }
 .movie-list {
   display: grid;
