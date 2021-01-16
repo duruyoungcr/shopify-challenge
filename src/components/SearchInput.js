@@ -1,5 +1,7 @@
 import React from 'react'
-import { Input } from "@chakra-ui/react"
+//chakra UI
+import { Input, InputLeftElement, InputGroup } from "@chakra-ui/react"
+import { SearchIcon } from '@chakra-ui/icons'
 
 const SearchInput = ({searchTerm, setSearchTerm , setLoading}) => {
     const handleChange = (e) => {
@@ -9,14 +11,18 @@ const SearchInput = ({searchTerm, setSearchTerm , setLoading}) => {
 
     return (
         <div className="search-box">
-            <h1 className="search-box-title">Nominater</h1>
-            <Input 
-                size="lg" 
-                placeholder="search for movies..." 
-                value={searchTerm} 
-                onChange={handleChange}
-            />
-            <p as="i" className="italic">Note: Please enter at least 3 characters</p>
+            <h1 className="title">Nominater</h1>
+            <InputGroup>
+                <InputLeftElement height="100%" children={<SearchIcon color="gray.300" size="lg"/>} />
+                <Input 
+                    size="lg" 
+                    placeholder="Search for movies..." 
+                    value={searchTerm} 
+                    onChange={handleChange}
+                    focusBorderColor="teal.400"
+                />
+            </InputGroup>
+            <p className="italic">Note: Please enter at least 3 characters for the best search results</p>
         </div>
     )
 }

@@ -5,7 +5,7 @@ import { Button } from "@chakra-ui/react"
 //sweetalert
 import swal from 'sweetalert';
 
-const Nominations = ({nomMovie}) => {
+const Nominations = ({nomMovie, setNomIDS}) => {
     const [nominationList, setNominationList] = useState([])
     const placeholderImage = "https://via.placeholder.com/150?text=N/A";
 
@@ -19,7 +19,6 @@ const Nominations = ({nomMovie}) => {
         {
             title: "Are you sure ?",
             text: "Movie will be removed from nomination list",
-            dangerMode: true,
             buttons: true
           }).then((value) => {
              if (value) {
@@ -27,6 +26,7 @@ const Nominations = ({nomMovie}) => {
                 const copy = nominationList.filter((movie) => movie.imdbID !== id)
                 localStorage.setItem('nominations', JSON.stringify(copy));
                 setNominationList(copy);
+                setNomIDS(copy.map((movie) => movie.imdbID));
              }
 
           }
@@ -36,11 +36,12 @@ const Nominations = ({nomMovie}) => {
     return (
         <div className="nominations">
             <p className="title">Nominated Movies</p>
+            <div className="nominations-list">
             {nominationList.map((movie, index) => {
                 return (
-                    <Box maxW="300px" borderWidth="1px" borderRadius="lg" overflow="hidden" key={index} m="2" d="flex" bg="teal.400" mx="auto">
+                    <Box w="100%" maxW="300px" borderWidth="1px" borderRadius="lg" overflow="hidden" key={index} m="2" d="flex" bg="teal.400" mx="auto">
                         <Image src={movie.Poster !== "N/A" ? movie.Poster : placeholderImage} alt={movie.Title} height="200px" width="150px"/>
-                        <Box p="2" maxW="100%" d="flex" flexDirection="column" justifyContent="space-around">
+                        <Box p="2" width="100%" d="flex" flexDirection="column" justifyContent="space-around">
                             <Box d="flex" alignItems="baseline" mt="2">
                                 <Badge borderRadius="full" px="2" colorScheme="teal" >
                                 {movie.Type}
@@ -64,6 +65,7 @@ const Nominations = ({nomMovie}) => {
                 )   
                 })
             }
+            </div>
         </div>
     )
 }

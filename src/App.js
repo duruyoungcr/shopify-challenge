@@ -12,6 +12,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [movies, setMovies] = useState([]);
   const [nomMovie, setNomMovie] = useState({});
+  const [nomIDS, setNomIDS] = useState([])
 
   useEffect(() => {
     FetchMovies()
@@ -19,14 +20,21 @@ function App() {
       setResults([]) ;
       setMovies([]);
     }
+
   }, [searchTerm])
+
+  useEffect(() => {
+    let nominations = JSON.parse(localStorage.getItem("nominations")) || []
+    const IDS = nominations.map((movie) => movie.imdbID) || [];
+    setNomIDS(IDS)
+  }, [nomMovie])
 
   const FetchMovies = async () => {
     try {
       const response = await axios.get(baseURL + searchTerm)
       setResults(response.data);
       setLoading(false);
-      if (response.data.Response === "True") {
+      if (response.data.Response === "True" && searchTerm !== '') {
         setMovies(response.data.Search)
       }
     } catch (error) {
@@ -37,8 +45,10 @@ function App() {
   return (
     <div className="App">
       <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} setLoading={setLoading}/>
-      <SearchResults results={results} loading={loading} searchTerm={searchTerm} movies={movies} setNomMovie={setNomMovie}/>
-      <Nominations  nomMovie={nomMovie}/>
+      <div className='main'>
+        <SearchResults results={results} loading={loading} searchTerm={searchTerm} movies={movies} setNomMovie={setNomMovie} nomIDS={nomIDS}/>
+        <Nominations nomMovie={nomMovie} setNomIDS={setNomIDS}/>
+      </div>
     </div>
   );
 }
